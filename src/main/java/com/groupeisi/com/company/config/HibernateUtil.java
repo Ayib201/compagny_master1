@@ -1,5 +1,8 @@
 package com.groupeisi.com.company.config;
 
+import com.groupeisi.com.company.entities.Product;
+import com.groupeisi.com.company.entities.Purchases;
+import com.groupeisi.com.company.entities.Sales;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.Properties;
@@ -43,6 +46,7 @@ public class HibernateUtil {
 
 				configuration.setProperties(settings);
 				configuration.addAnnotatedClass(UserEntity.class);
+				configuration.addAnnotatedClass(Product.class);
 
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 						.applySettings(configuration.getProperties())

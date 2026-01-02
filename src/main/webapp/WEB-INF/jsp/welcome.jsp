@@ -21,13 +21,13 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin">Admin</a>
+                    <a class="nav-link" href="produit">Produits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="produits">Produit</a>
+                    <a class="nav-link" href="purchase">Purchases</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="purchases">Produit</a>
+                    <a class="nav-link" href="sale">Sales</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
