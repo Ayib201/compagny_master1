@@ -25,7 +25,7 @@
 			<tr>
 				<td>${sale.dateP}</td>
 				<td>${sale.quantity}</td>
-				<td>${sale.product.name}</td> <!-- Assure-toi que product a une propriété name -->
+				<td>${sale.product_ref}</td> <!-- Assure-toi que product a une propriété name -->
 			</tr>
 		</c:forEach>
 		</tbody>

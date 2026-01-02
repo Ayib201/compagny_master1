@@ -21,11 +21,11 @@
 		</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${purchaseList}" var="purchase">
+		<c:forEach items="${purchasesList}" var="purchase">
 			<tr>
 				<td>${purchase.dateP}</td>
 				<td>${purchase.quantity}</td>
-				<td>${purchase.product.name}</td> <!-- Assure-toi que product a une propriété name -->
+				<td>${purchase.product_ref}</td> <!-- Assure-toi que product a une propriété name -->
 			</tr>
 		</c:forEach>
 		</tbody>

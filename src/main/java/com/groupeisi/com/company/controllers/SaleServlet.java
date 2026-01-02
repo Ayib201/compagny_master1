@@ -2,6 +2,7 @@ package com.groupeisi.com.company.controllers;
 
 import com.groupeisi.com.company.dao.product.ProductDao;
 import com.groupeisi.com.company.dto.SaleDto;
+import com.groupeisi.com.company.services.produit.ProductService;
 import com.groupeisi.com.company.services.sale.ISaleService;
 import com.groupeisi.com.company.services.sale.SaleService;
 import jakarta.servlet.ServletConfig;
@@ -22,10 +23,11 @@ import java.util.Date;
 public class SaleServlet extends HttpServlet {
 	private ISaleService saleService;
 	private final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
-
+	private ProductService productService;
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		this.productService = new ProductService();
         this.saleService = new SaleService(new ProductDao());
 	}
 
@@ -41,6 +43,7 @@ public class SaleServlet extends HttpServlet {
 
 	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("salesList", saleService.getAll());
+		req.setAttribute("productsList", productService.getAll());
 		req.getRequestDispatcher("WEB-INF/jsp/sales/list.jsp").forward(req, resp);
 	}
 
