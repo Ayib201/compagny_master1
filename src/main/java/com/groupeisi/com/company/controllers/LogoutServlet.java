@@ -10,17 +10,19 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-@WebServlet(name = "welcome", value = "/welcome")
-public class WelcomeServlet extends HttpServlet {
 
-	private final Logger log = LoggerFactory.getLogger(WelcomeServlet.class);
+@WebServlet(name = "logout", value = "/logout")
+public class LogoutServlet extends HttpServlet {
 
+	private final Logger log = LoggerFactory.getLogger(LogoutServlet.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		
+		req.getSession().invalidate();
+		req.getSession().setAttribute("username", null);
 		try {
-			req.getRequestDispatcher("WEB-INF/jsp/welcome.jsp").forward(req, resp);
+			resp.sendRedirect("login");
 		} catch (Exception ex) {
 			log.error("Error : ", ex);
 		}

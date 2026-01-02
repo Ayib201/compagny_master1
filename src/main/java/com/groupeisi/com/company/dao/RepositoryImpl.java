@@ -3,6 +3,7 @@ package com.groupeisi.com.company.dao;
 import java.util.List;
 
 import com.groupeisi.com.company.config.HibernateUtil;
+import com.groupeisi.com.company.entities.UserEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;

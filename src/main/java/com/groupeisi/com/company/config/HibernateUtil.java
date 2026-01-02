@@ -30,7 +30,7 @@ public class HibernateUtil {
 				Configuration configuration = new Configuration();
 				Properties settings = new Properties();
 
-				settings.put(AvailableSettings.DRIVER, "com.mysql.cj.jdbc.Driver");
+				settings.put(AvailableSettings.DRIVER, "org.postgresql.Driver");
 				settings.put(AvailableSettings.URL, dotenv.get("DB_URL"));
 				settings.put(AvailableSettings.USER, dotenv.get("DB_USER"));
 				settings.put(AvailableSettings.PASS, dotenv.get("DB_PASSWORD"));
