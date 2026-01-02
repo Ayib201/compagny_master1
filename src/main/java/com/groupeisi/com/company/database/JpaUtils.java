@@ -1,0 +1,19 @@
+package com.groupeisi.com.company.database;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+public class JpaUtils {
+
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("companyPU");
+
+    public static EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+
+    public static void close() {
+        emf.close();
+    }
+
+}
