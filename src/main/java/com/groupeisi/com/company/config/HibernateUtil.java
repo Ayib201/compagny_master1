@@ -38,7 +38,7 @@ public class HibernateUtil {
 				settings.put(AvailableSettings.USER, dotenv.get("DB_USER"));
 				settings.put(AvailableSettings.PASS, dotenv.get("DB_PASSWORD"));
 
-				settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+				settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
 				settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
 				settings.put(AvailableSettings.SHOW_SQL, "true");
 				settings.put(AvailableSettings.FORMAT_SQL, "true");
@@ -47,6 +47,8 @@ public class HibernateUtil {
 				configuration.setProperties(settings);
 				configuration.addAnnotatedClass(UserEntity.class);
 				configuration.addAnnotatedClass(Product.class);
+				configuration.addAnnotatedClass(Sales.class);
+				configuration.addAnnotatedClass(Purchases.class);
 
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 						.applySettings(configuration.getProperties())

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface IProductDao extends Repository<Product> {
-
+    Product getProduct(String id);
 }
