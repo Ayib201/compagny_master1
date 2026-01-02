@@ -6,5 +6,4 @@ import com.groupeisi.com.company.entities.Purchases;
 
 
 public interface IPurchaseDao extends Repository<Purchases> {
-
 }

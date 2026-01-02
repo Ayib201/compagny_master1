@@ -15,5 +15,5 @@ public class PurchaseDto {
     private Long id;
     private Date dateP;
     private double quantity;
-    private String product_id;
+    private String product_ref;
 }

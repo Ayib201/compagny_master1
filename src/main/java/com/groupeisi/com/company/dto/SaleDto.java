@@ -18,5 +18,5 @@ public class SaleDto {
     private long id;
     private Date dateP;
     private double quantity;
-    private String product_id;
+    private String product_ref;
 }
