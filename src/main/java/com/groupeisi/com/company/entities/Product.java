@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     private String ref;
-    @Column(name = "name",length = 55, nullable = false,unique = true)
+    @Column(nullable = false,unique = true)
     private String name;
     private double stock;
 }

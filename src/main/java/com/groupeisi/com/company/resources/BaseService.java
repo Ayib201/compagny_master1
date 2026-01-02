@@ -1,4 +1,4 @@
-package com.groupeisi.com.company.database;
+package com.groupeisi.com.company.resources;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
