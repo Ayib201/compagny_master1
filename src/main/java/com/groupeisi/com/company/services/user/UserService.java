@@ -1,4 +1,4 @@
-package com.groupeisi.com.company.services;
+package com.groupeisi.com.company.services.user;
 
 import com.groupeisi.com.company.dao.user.IUserDao;
 import com.groupeisi.com.company.dao.user.UserDao;

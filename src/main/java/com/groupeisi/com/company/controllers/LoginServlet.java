@@ -5,8 +5,8 @@ import java.util.Optional;
 
 
 import com.groupeisi.com.company.dto.UserDto;
-import com.groupeisi.com.company.services.IUserService;
-import com.groupeisi.com.company.services.UserService;
+import com.groupeisi.com.company.services.user.IUserService;
+import com.groupeisi.com.company.services.user.UserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

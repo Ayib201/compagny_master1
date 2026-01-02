@@ -53,7 +53,8 @@ public class HibernateUtil {
 				return sessionFactory;
 
 			} catch (Exception e) {
-				LOG.error("Erreur lors de la création de la SessionFactory : ", e);
+				LOG.error("Impossible d'initialiser Hibernate", e);
+				throw new ExceptionInInitializerError(e);
 			}
 		}
 		return sessionFactory;

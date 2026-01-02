@@ -1,10 +1,8 @@
 package com.groupeisi.com.company.controllers;
 
-import java.io.IOException;
-
-import com.groupeisi.com.company.dto.UserDto;
-import com.groupeisi.com.company.services.user.IUserService;
-import com.groupeisi.com.company.services.user.UserService;
+import com.groupeisi.com.company.dto.ProductDto;
+import com.groupeisi.com.company.services.produit.IProductService;
+import com.groupeisi.com.company.services.produit.ProductService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,15 +12,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(name = "admin", value = "/admin")
-public class AdminServlet extends HttpServlet {
+import java.io.IOException;
 
-	private IUserService userService;
-	private final Logger logger = LoggerFactory.getLogger(AdminServlet.class);
+@WebServlet(name = "produit", value = "/produit")
+public class ProduitServlet extends HttpServlet {
+
+	private IProductService productService;
+	private final Logger logger = LoggerFactory.getLogger(ProduitServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		userService = new UserService();
+		productService = new ProductService();
 	}
 
 	@Override
@@ -36,22 +36,26 @@ public class AdminServlet extends HttpServlet {
 	}
 
 	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("usersList", userService.getAll());
+		req.setAttribute("productsList", productService.getAll());
 
-		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("WEB-INF/jsp/products/list.jsp").forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		String firstName = req.getParameter("firstName");
-		String lastName = req.getParameter("lastName");
-		String email = req.getParameter("email");
-		String password = req.getParameter("password");
+		String name = req.getParameter("name");
+		String ref = req.getParameter("ref");
+		String stock = req.getParameter("stock");
+
+        new ProductDto();
+        ProductDto productDto = ProductDto.builder()
+				.name(name)
+				.ref(ref)
+				.stock(Double.parseDouble(stock))
+				.build();
 		
-		UserDto userDto = new UserDto(0, firstName, lastName, email, password);
-		
-		userService.save(userDto);
+		productService.save(productDto);
 
 		try {
 			loadPage(req, resp);
