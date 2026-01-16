@@ -1,5 +1,6 @@
 package com.groupeisi.com.company.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Sales {
+public class Sales implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

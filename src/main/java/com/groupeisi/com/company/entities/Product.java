@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +14,7 @@ import lombok.*;
 @Builder
 @Setter
 @Getter
-public class Product {
+public class Product implements Serializable {
     @Id
     private String ref;
     @Column(nullable = false,unique = true)
