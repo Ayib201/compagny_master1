@@ -51,13 +51,8 @@ public class LoginServlet extends HttpServlet {
 				resp.sendRedirect("welcome");
 			}
 		} catch (Exception e) {
+			resp.sendRedirect("login");
 			log.error("Erreur", e);
 		}
-		try {
-			resp.sendRedirect("login");
-		} catch (Exception ex) {
-			log.error("Error : ", ex);
-		}
-
 	}
 }
