@@ -15,6 +15,9 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
         <junit.version>5.11.0</junit.version>
+        <DB_URL>jdbc:postgresql://localhost:5432/defaultdb</DB_URL>
+        <DB_USER>defaultuser</DB_USER>
+        <DB_PASSWORD>defaultpassword</DB_PASSWORD>
     </properties>
 
     <dependencies>
@@ -116,9 +119,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.7.0</version>
                 <configuration>
-                    <url>${env.DB_URL}</url>
-                    <user>${env.DB_USER}</user>
-                    <password>${env.DB_PASSWORD}</password>
+                    <url>${DB_URL}</url>
+                    <user>${DB_USER}</user>
+                    <password>${DB_PASSWORD}</password>
                     <baselineOnMigrate>true</baselineOnMigrate>
                     <locations>
                         <location>filesystem:src/main/resources/db/migrations</location>
