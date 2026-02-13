@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: container-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passer123@
+      POSTGRES_DB: companydb
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_company_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d companydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    ports:
+      - "81:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_company_data:
+    driver: local

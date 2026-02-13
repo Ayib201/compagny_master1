@@ -15,9 +15,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
         <junit.version>5.11.0</junit.version>
-        <DB_URL>jdbc:postgresql://localhost:5432/defaultdb</DB_URL>
-        <DB_USER>defaultuser</DB_USER>
-        <DB_PASSWORD>defaultpassword</DB_PASSWORD>
     </properties>
 
     <dependencies>
@@ -70,7 +67,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>6.6.4.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -97,36 +93,21 @@
                 <version>3.4.0</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${project.basedir}/.env</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.7.0</version>
                 <configuration>
-                    <url>${DB_URL}</url>
-                    <user>${DB_USER}</user>
-                    <password>${DB_PASSWORD}</password>
-                    <baselineOnMigrate>true</baselineOnMigrate>
-                    <locations>
-                        <location>filesystem:src/main/resources/db/migrations</location>
-                    </locations>
+                    <configFiles>
+                        <configFile>src/main/resources/flyway.conf</configFile>
+                    </configFiles>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.7.7</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
