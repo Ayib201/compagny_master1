@@ -21,6 +21,7 @@ public class SaleMapper {
 
         return SaleDto
                 .builder()
+                .id(sale.getId())
                 .dateP(sale.getDateP())
                 .quantity(sale.getQuantity())
                 .product_ref(sale.getProduct().getName())
@@ -29,6 +30,7 @@ public class SaleMapper {
 
     public static Sales toSale(SaleDto saleDto, Product product) {
         return Sales.builder()
+                .id(saleDto.getId())
                 .dateP(saleDto.getDateP())
                 .quantity(saleDto.getQuantity())
                 .product(product)

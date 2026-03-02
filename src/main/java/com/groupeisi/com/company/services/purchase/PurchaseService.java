@@ -10,13 +10,17 @@ import com.groupeisi.com.company.entities.Purchases;
 import com.groupeisi.com.company.mappers.PurchaseMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PurchaseService implements IPurchaseService {
+
 	private final IProductDao productDao;
 	private final IPurchaseDao dao = new PurchaseDao();
+
 	public PurchaseService(ProductDao productDao) {
 		this.productDao = productDao;
 	}
+
 	@Override
 	public List<PurchaseDto> getAll() {
 		return PurchaseMapper.listPurchaseToListPurchaseDto(dao.list(Purchases.class));
@@ -24,9 +28,26 @@ public class PurchaseService implements IPurchaseService {
 
 	@Override
 	public boolean save(PurchaseDto purchaseDto) {
-		Product product = productDao.get(purchaseDto.getProduct_ref(),Product.class);
-		// Convertir en entité Purchases avec product
+		Product product = productDao.get(purchaseDto.getProduct_ref(), Product.class);
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
 		return dao.save(purchase);
+	}
+
+	@Override
+	public boolean delete(Long id) {
+		return dao.delete(id, Purchases.class);
+	}
+
+	@Override
+	public boolean update(PurchaseDto purchaseDto) {
+		Product product = productDao.get(purchaseDto.getProduct_ref(), Product.class);
+		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
+		return dao.update(purchase);
+	}
+
+	@Override
+	public Optional<PurchaseDto> get(Long id) {
+		return Optional.ofNullable(dao.get(id, Purchases.class))
+				.map(PurchaseMapper::toPurchaseDto);
 	}
 }

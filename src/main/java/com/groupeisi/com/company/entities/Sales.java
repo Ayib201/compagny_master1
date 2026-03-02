@@ -18,12 +18,8 @@ public class Sales implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date_p", nullable = false)
+    private Long id;
     private Date dateP;
-
     @Column(nullable = false)
     private double quantity;
 

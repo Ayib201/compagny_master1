@@ -29,9 +29,24 @@ public class ProductServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
+			String action = req.getParameter("action");
+			String ref    = req.getParameter("id");
+
+			if ("delete".equals(action) && ref != null) {
+				productService.delete(ref);
+				resp.sendRedirect("produit");
+				return;
+			}
+
+			if ("edit".equals(action) && ref != null) {
+				productService.get(ref).ifPresent(p ->
+						req.setAttribute("editProduct", p)
+				);
+			}
+
 			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error loading product list", exception);
+		} catch (Exception e) {
+			logger.error("Error loading product list", e);
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 	}
@@ -44,8 +59,10 @@ public class ProductServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			String name = req.getParameter("name");
-			String ref = req.getParameter("ref");
+			String action  = req.getParameter("action");
+			String id      = req.getParameter("id");
+			String name    = req.getParameter("name");
+			String ref     = req.getParameter("ref");
 			String stockStr = req.getParameter("stock");
 
 			double stock = 0;
@@ -58,17 +75,27 @@ public class ProductServlet extends HttpServlet {
 				return;
 			}
 
+			if ("delete".equals(action) && id != null) {
+				productService.delete(id);
+				resp.sendRedirect("produit");
+				return;
+			}
+
 			ProductDto productDto = ProductDto.builder()
 					.name(name)
 					.ref(ref)
 					.stock(stock)
 					.build();
 
-			productService.save(productDto);
+			if ("update".equals(action) && id != null && !id.isEmpty()) {
+				productService.update(productDto);
+			} else {
+				productService.save(productDto);
+			}
 
-			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error saving product", exception);
+			resp.sendRedirect("produit");
+		} catch (Exception e) {
+			logger.error("Error saving product", e);
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 	}

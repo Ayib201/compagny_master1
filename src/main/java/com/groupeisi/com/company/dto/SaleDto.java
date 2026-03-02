@@ -1,7 +1,5 @@
 package com.groupeisi.com.company.dto;
 
-import com.groupeisi.com.company.entities.Product;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +13,7 @@ import java.util.Date;
 @Builder
 public class SaleDto {
 
-    private long id;
+    private Long id;
     private Date dateP;
     private double quantity;
     private String product_ref;

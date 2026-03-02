@@ -21,6 +21,7 @@ public class PurchaseMapper {
 
         return PurchaseDto
                 .builder()
+                .id(purchase.getId())
                 .dateP(purchase.getDateP())
                 .quantity(purchase.getQuantity())
                 .product_ref(purchase.getProduct().getName())
@@ -29,6 +30,7 @@ public class PurchaseMapper {
 
     public static Purchases toPurchase(PurchaseDto purchaseDto, Product product) {
         return Purchases.builder()
+                .id(purchaseDto.getId())
                 .dateP(purchaseDto.getDateP())
                 .quantity(purchaseDto.getQuantity())
                 .product(product)

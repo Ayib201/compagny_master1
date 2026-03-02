@@ -10,6 +10,7 @@ import com.groupeisi.com.company.entities.Sales;
 import com.groupeisi.com.company.mappers.SaleMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SaleService implements ISaleService {
 	private final IProductDao productDao;
@@ -29,5 +30,23 @@ public class SaleService implements ISaleService {
 		Product product = productDao.get(saleDto.getProduct_ref(), Product.class);
 		Sales sales = SaleMapper.toSale(saleDto, product);
 		return saleDao.save(sales);
+	}
+
+	@Override
+	public boolean delete(Long id) {
+		return saleDao.delete(id, Sales.class);
+	}
+
+	@Override
+	public boolean update(SaleDto saleDto) {
+		Product product = productDao.get(saleDto.getProduct_ref(), Product.class);
+		Sales sale = SaleMapper.toSale(saleDto, product);
+		return saleDao.update(sale);
+	}
+
+	@Override
+	public Optional<SaleDto> get(Long id) {
+		return Optional.ofNullable(saleDao.get(id, Sales.class))
+				.map(SaleMapper::toSaleDto);
 	}
 }

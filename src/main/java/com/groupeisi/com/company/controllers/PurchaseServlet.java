@@ -22,6 +22,7 @@ import java.util.Date;
 
 @WebServlet(name = "purchase", value = "/purchase")
 public class PurchaseServlet extends HttpServlet {
+
 	private IPurchaseService purchaseService;
 	private IProductService productService;
 	private final Logger logger = LoggerFactory.getLogger(PurchaseServlet.class);
@@ -29,58 +30,80 @@ public class PurchaseServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		this.productService = new ProductService();
-        this.purchaseService = new PurchaseService(new ProductDao());
+		this.productService  = new ProductService();
+		this.purchaseService = new PurchaseService(new ProductDao());
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
+			String action  = req.getParameter("action");
+			String idParam = req.getParameter("id");
+
+			if ("delete".equals(action) && idParam != null) {
+				purchaseService.delete(Long.parseLong(idParam));
+				resp.sendRedirect("purchase");
+				return;
+			}
+
+			if ("edit".equals(action) && idParam != null) {
+				purchaseService.get(Long.parseLong(idParam)).ifPresent(p ->
+						req.setAttribute("editPurchase", p)
+				);
+			}
+
 			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error loading Purchase list", exception);
+		} catch (Exception e) {
+			logger.error("Error loading Purchase list", e);
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 	}
 
 	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("purchasesList", purchaseService.getAll());
-		req.setAttribute("productsList", productService.getAll());
+		req.setAttribute("productsList",  productService.getAll());
 		req.getRequestDispatcher("WEB-INF/jsp/purchases/list.jsp").forward(req, resp);
+	}
+
+	private Date parseDate(String dateStr) throws ParseException {
+		if (dateStr == null || dateStr.isEmpty()) return null;
+		return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			String dateStr = req.getParameter("dateP");
+			String action      = req.getParameter("action");
+			String idParam     = req.getParameter("id");
+			String dateStr     = req.getParameter("dateP");
 			String quantityStr = req.getParameter("quantity");
-			String productRef = req.getParameter("product_ref");
+			String productRef  = req.getParameter("product_ref");
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date dateP = null;
+			// Delete via POST
+			if ("delete".equals(action) && idParam != null) {
+				purchaseService.delete(Long.parseLong(idParam));
+				resp.sendRedirect("purchase");
+				return;
+			}
 
+			Date dateP;
 			try {
-				if (dateStr != null && !dateStr.isEmpty()) {
-					dateP = formatter.parse(dateStr);
-				}
+				dateP = parseDate(dateStr);
 			} catch (ParseException e) {
-				e.printStackTrace();
 				req.setAttribute("errorMessage", "Date invalide.");
 				loadPage(req, resp);
 				return;
 			}
 
-			int quantity = 0;
+			int quantity;
 			try {
-				if (quantityStr != null && !quantityStr.isEmpty()) {
-					quantity = Integer.parseInt(quantityStr);
-				} else {
+				if (quantityStr == null || quantityStr.isEmpty()) {
 					req.setAttribute("errorMessage", "Quantité obligatoire.");
 					loadPage(req, resp);
 					return;
 				}
+				quantity = Integer.parseInt(quantityStr);
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				req.setAttribute("errorMessage", "Quantité invalide.");
 				loadPage(req, resp);
 				return;
@@ -98,13 +121,17 @@ public class PurchaseServlet extends HttpServlet {
 					.product_ref(productRef)
 					.build();
 
-			purchaseService.save(purchaseDto);
+			if ("update".equals(action) && idParam != null && !idParam.isEmpty()) {
+				purchaseDto.setId(Long.parseLong(idParam));
+				purchaseService.update(purchaseDto);
+			} else {
+				purchaseService.save(purchaseDto);
+			}
 
-			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error saving Purchase", exception);
+			resp.sendRedirect("purchase");
+		} catch (Exception e) {
+			logger.error("Error saving Purchase", e);
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 	}
-
 }

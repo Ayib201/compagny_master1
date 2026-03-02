@@ -22,7 +22,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean save(UserDto userDto) {
-		return userDao.save(UserMapper.toUserEtity(userDto));
+		return userDao.save(UserMapper.toUserEntity(userDto));
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean update(UserDto userDto) {
-		return userDao.update(UserMapper.toUserEtity(userDto));
+		return userDao.update(UserMapper.toUserEntity(userDto));
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class UserMapper {
         return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(),  user.getPassword());
     }
 
-    public static UserEntity toUserEtity(UserDto user) {
+    public static UserEntity toUserEntity(UserDto user) {
 
         return new UserEntity(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword());
     }
