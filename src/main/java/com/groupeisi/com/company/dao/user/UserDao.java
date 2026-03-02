@@ -13,7 +13,7 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 
 
-public class UserDao extends RepositoryImpl<UserEntity> implements IUserDao {
+public class UserDao extends RepositoryImpl<UserEntity, String> implements IUserDao {
 	
 	private final Session session = HibernateUtil.getSessionFactory().openSession();
 

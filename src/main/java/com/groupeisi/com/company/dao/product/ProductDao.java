@@ -6,9 +6,6 @@ import com.groupeisi.com.company.entities.Product;
 import org.hibernate.Session;
 
 
-public class ProductDao extends RepositoryImpl<Product> implements IProductDao {
+public class ProductDao extends RepositoryImpl<Product, String> implements IProductDao {
 	private final Session session = HibernateUtil.getSessionFactory().openSession();
-	public Product getProduct(String id) {
-		return session.get(Product.class, id);
-	}
 }

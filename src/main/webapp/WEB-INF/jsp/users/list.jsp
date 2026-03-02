@@ -23,28 +23,26 @@
 				<table class="table table-hover mb-0">
 					<thead class="table-dark">
 					<tr>
-						<th>ID</th>
+						<th>Email</th>
 						<th>First name</th>
 						<th>Last name</th>
-						<th>Email</th>
 						<th>Actions</th>
 					</tr>
 					</thead>
 					<tbody>
 					<c:forEach items="${usersList}" var="user">
 						<tr>
-							<td>${user.id}</td>
+							<td>${user.email}</td>
 							<td>${user.firstName}</td>
 							<td>${user.lastName}</td>
-							<td>${user.email}</td>
 							<td class="text-center">
 								<!-- Edit -->
-								<a href="sale?action=edit&id=${user.id}"
+								<a href="admin?action=edit&id=${user.email}"
 								   class="btn btn-sm btn-outline-warning me-1">
 									<i class="bi bi-pencil"></i> Edit
 								</a>
 								<!-- Delete -->
-								<a href="sale?action=delete&id=${user.id}"
+								<a href="admin?action=delete&id=${user.email}"
 								   class="btn btn-sm btn-outline-danger"
 								   onclick="return confirm('Confirmer la suppression ?')">
 									<i class="bi bi-trash"></i> Delete

@@ -24,7 +24,7 @@ public class PurchaseService implements IPurchaseService {
 
 	@Override
 	public boolean save(PurchaseDto purchaseDto) {
-		Product product = productDao.getProduct(purchaseDto.getProduct_ref());
+		Product product = productDao.get(purchaseDto.getProduct_ref(),Product.class);
 		// Convertir en entité Purchases avec product
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
 		return dao.save(purchase);

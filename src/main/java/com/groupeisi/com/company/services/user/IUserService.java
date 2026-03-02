@@ -11,4 +11,8 @@ public interface IUserService {
 	List<UserDto> getAll();
 	boolean save(UserDto userDto);
 	Optional<UserDto> login (String email, String password);
+	boolean delete(String id);
+	boolean update(UserDto userDto);
+	Optional<UserDto> get(String id);
+
 }

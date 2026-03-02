@@ -30,4 +30,20 @@ public class UserService implements IUserService {
 		return userDao.login(email, password)
 				.map(UserMapper::toUserDto);
 	}
+
+	@Override
+	public boolean delete(String id) {
+		return userDao.delete(id, UserEntity.class);
+	}
+
+	@Override
+	public boolean update(UserDto userDto) {
+		return userDao.update(UserMapper.toUserEtity(userDto));
+	}
+
+	@Override
+	public Optional<UserDto> get(String id) {
+		return Optional.ofNullable(userDao.get(id, UserEntity.class))
+				.map(UserMapper::toUserDto);
+	}
 }

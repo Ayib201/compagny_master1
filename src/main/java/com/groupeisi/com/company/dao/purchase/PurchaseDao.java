@@ -6,6 +6,6 @@ import com.groupeisi.com.company.entities.Purchases;
 import org.hibernate.Session;
 
 
-public class PurchaseDao extends RepositoryImpl<Purchases> implements IPurchaseDao {
+public class PurchaseDao extends RepositoryImpl<Purchases, Long> implements IPurchaseDao {
 	private final Session session = HibernateUtil.getSessionFactory().openSession();
 }

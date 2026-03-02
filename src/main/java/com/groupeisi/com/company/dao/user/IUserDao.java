@@ -6,7 +6,7 @@ import com.groupeisi.com.company.entities.UserEntity;
 import java.util.Optional;
 
 
-public interface IUserDao extends Repository<UserEntity> {
+public interface IUserDao extends Repository<UserEntity, String> {
 
 	Optional<UserEntity> login (String email, String password);
 }

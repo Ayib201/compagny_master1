@@ -20,11 +20,11 @@ public class UserMapper {
 
     public static UserDto toUserDto(UserEntity user) {
 
-        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(),  user.getPassword());
     }
 
     public static UserEntity toUserEtity(UserDto user) {
 
-        return new UserEntity(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        return new UserEntity(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword());
     }
 }

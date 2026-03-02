@@ -1,6 +1,7 @@
 package com.groupeisi.com.company.controllers;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import com.groupeisi.com.company.dto.UserDto;
 import com.groupeisi.com.company.services.user.IUserService;
@@ -27,44 +28,49 @@ public class AdminServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		try {
+			String action = req.getParameter("action");
+			String email = req.getParameter("id");
+
+			if ("delete".equals(action) && email != null) {
+				userService.delete(email);
+				resp.sendRedirect("admin");
+				return;
+			}
+
+			if ("edit".equals(action) && email != null) {
+				userService.get(email).ifPresent(user ->
+						req.setAttribute("editUser", user)
+				);
+			}
 			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error : ", exception);
+		} catch (Exception e) {
+			logger.error("Error : ", e);
 		}
 	}
 
 	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("usersList", userService.getAll());
-
 		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp").forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		String firstName = req.getParameter("firstName");
-		String lastName = req.getParameter("lastName");
-		String email = req.getParameter("email");
-		String password = req.getParameter("password");
-		
-		UserDto userDto = new UserDto(0, firstName, lastName, email, password);
-		
-		userService.save(userDto);
-
 		try {
-			loadPage(req, resp);
-		} catch (Exception exception) {
-			logger.error("Error : ", exception);
+			String id = req.getParameter("id");
+			String firstName = req.getParameter("firstName");
+			String lastName  = req.getParameter("lastName");
+			String email     = req.getParameter("email");
+			String password  = req.getParameter("password");
+			UserDto userDto = new UserDto(email,firstName, lastName , password);
+			if (id != null && !id.isEmpty()) {
+				userService.update(userDto);
+			} else {
+				userService.save(userDto);
+			}
+			resp.sendRedirect("admin");
+		} catch (Exception e) {
+			logger.error("Error : ", e);
 		}
-	}
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("id", req.getParameter("id"));
-	}
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getAttribute("id");
 	}
 }

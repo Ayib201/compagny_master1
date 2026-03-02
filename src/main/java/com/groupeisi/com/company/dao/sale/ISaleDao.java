@@ -4,6 +4,5 @@ import com.groupeisi.com.company.dao.Repository;
 import com.groupeisi.com.company.entities.Sales;
 
 
-public interface ISaleDao extends Repository<Sales> {
-
+public interface ISaleDao extends Repository<Sales, Long> {
 }

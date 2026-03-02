@@ -9,7 +9,7 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class RepositoryImpl<T> implements Repository<T> {
+public class RepositoryImpl<T,I> implements Repository<T, I> {
 
 	private final Session session = HibernateUtil.getSessionFactory().openSession();
 	private Transaction transaction = null;
@@ -30,7 +30,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	@Override
-	public boolean delete(long id, Class<T> clazz) {
+	public boolean delete(I id, Class<T> clazz) {
 		try {
 			transaction = session.beginTransaction();
 			T entity = session.get(clazz, id);
@@ -73,7 +73,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	@Override
-	public T get(long id, Class<T> clazz) {
+	public T get(I id, Class<T> clazz) {
 		return session.get(clazz, id);
 	}
 

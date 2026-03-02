@@ -13,14 +13,12 @@ import java.io.Serializable;
 @Builder
 public class UserEntity implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@Column(name = "email", length = 250, nullable = false, unique = true)
+	private String email;
 	@Column(name = "firstName", length = 250, nullable = false)
 	private String firstName;
 	@Column(name = "lastName", length = 200, nullable = false)
 	private String lastName;
-	@Column(name = "email", length = 250, nullable = false, unique = true)
-	private String email;
 	@Column(name = "password", nullable = false)
 	private String password;
 }
