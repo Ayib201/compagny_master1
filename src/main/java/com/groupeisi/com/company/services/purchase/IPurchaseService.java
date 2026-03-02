@@ -1,6 +1,5 @@
 package com.groupeisi.com.company.services.purchase;
 
-import com.groupeisi.com.company.dto.ProductDto;
 import com.groupeisi.com.company.dto.PurchaseDto;
 
 import java.util.List;
