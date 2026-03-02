@@ -95,20 +95,6 @@ public class PurchaseServlet extends HttpServlet {
 				return;
 			}
 
-			int quantity;
-			try {
-				if (quantityStr == null || quantityStr.isEmpty()) {
-					req.setAttribute("errorMessage", "Quantité obligatoire.");
-					loadPage(req, resp);
-					return;
-				}
-				quantity = Integer.parseInt(quantityStr);
-			} catch (NumberFormatException e) {
-				req.setAttribute("errorMessage", "Quantité invalide.");
-				loadPage(req, resp);
-				return;
-			}
-
 			if (productRef == null || productRef.isEmpty()) {
 				req.setAttribute("errorMessage", "Référence produit obligatoire.");
 				loadPage(req, resp);
@@ -117,7 +103,7 @@ public class PurchaseServlet extends HttpServlet {
 
 			PurchaseDto purchaseDto = PurchaseDto.builder()
 					.dateP(dateP)
-					.quantity(quantity)
+					.quantity(Double.parseDouble(quantityStr))
 					.product_ref(productRef)
 					.build();
 

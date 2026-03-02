@@ -107,16 +107,15 @@
 
 						<!-- PRODUCT -->
 						<div class="col-md-4">
-							<label for="selectProduct" class="form-label">Produit</label>
+							<label for="selectProduct" class="form-label">Produit ${editPurchase.product_ref}</label>
 							<select name="product_ref"
 									id="selectProduct"
 									class="form-select"
 									required>
-								<option value="" disabled>Choisissez un produit</option>
-
+								<option value="">Choisissez un produit</option>
 								<c:forEach items="${productsList}" var="product">
 									<option value="${fn:escapeXml(product.ref)}"
-										${editPurchase != null && editPurchase.product_ref eq product.ref ? 'selected' : ''}>
+										${editPurchase != null && editPurchase.product_ref eq product.name ? 'selected' : ''}>
 											${fn:escapeXml(product.name)} (${fn:escapeXml(product.ref)})
 									</option>
 								</c:forEach>

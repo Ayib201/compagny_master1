@@ -89,10 +89,6 @@ Cette classe crée un nouvel utilisateur test (Ayib Toure) via le `UserService` 
 2. Copiez `target/company-1.0-SNAPSHOT.war` dans le dossier `webapps` de Tomcat
 3. Démarrez Tomcat
 
-### Avec Maven (mode développement)
-```bash
-mvn tomcat7:run
-```
 
 L'application sera accessible sur `http://localhost:8080/company`
 
@@ -137,7 +133,6 @@ src/main/
 ### Migrations
 Les migrations SQL sont versionnées dans `src/main/resources/db/migrations/`
 - `V1__init_db.sql` - Initialisation du schéma
-- `V2__update_schema.sql` - Mises à jour ultérieures
 
 Exécutées automatiquement lors du déploiement via Flyway.
 
