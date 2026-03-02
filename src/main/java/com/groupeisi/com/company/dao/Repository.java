@@ -1,7 +1,5 @@
 package com.groupeisi.com.company.dao;
 
-import com.groupeisi.com.company.entities.UserEntity;
-
 import java.util.List;
 
 public interface Repository <T> {

@@ -59,4 +59,12 @@ public class AdminServlet extends HttpServlet {
 			logger.error("Error : ", exception);
 		}
 	}
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("id", req.getParameter("id"));
+	}
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getAttribute("id");
+	}
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!-- SIDEBAR + TOPBAR -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -9,7 +10,7 @@
 
     <a href="#" class="d-flex align-items-center mb-3 text-white text-decoration-none">
         <i class="bi bi-shield-lock-fill fs-4 me-2 text-primary"></i>
-        <span class="fs-5 fw-semibold">Security App</span>
+        <span class="fs-5 fw-semibold">Commerce en ligne</span>
     </a>
 
     <hr class="border-secondary">
@@ -50,8 +51,11 @@
 
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2 fw-bold" style="width:34px;height:34px;font-size:.85rem;">AD</div>
-            <strong>Admin</strong>
+            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2 fw-bold"
+                 style="width:34px;height:34px;font-size:.85rem;">
+                ${fn:toUpperCase(fn:substring(sessionScope.username, 0, 2))}
+            </div>
+            <strong>${sessionScope.username}</strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow mb-1">
             <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
