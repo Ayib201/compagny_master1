@@ -57,17 +57,29 @@ public class AdminServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			String id = req.getParameter("id");
+			String action = req.getParameter("action");
+
+			if ("delete".equals(action)) {
+				String email = req.getParameter("id");
+				userService.delete(email);
+				resp.sendRedirect("admin");
+				return;
+			}
+
+			String id        = req.getParameter("id");
 			String firstName = req.getParameter("firstName");
 			String lastName  = req.getParameter("lastName");
 			String email     = req.getParameter("email");
 			String password  = req.getParameter("password");
-			UserDto userDto = new UserDto(email,firstName, lastName , password);
-			if (id != null && !id.isEmpty()) {
+
+			UserDto userDto = new UserDto(email, firstName, lastName, password);
+
+			if ("update".equals(action) && id != null && !id.isEmpty()) {
 				userService.update(userDto);
 			} else {
 				userService.save(userDto);
 			}
+
 			resp.sendRedirect("admin");
 		} catch (Exception e) {
 			logger.error("Error : ", e);
