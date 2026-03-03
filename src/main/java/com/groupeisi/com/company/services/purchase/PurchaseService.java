@@ -28,7 +28,7 @@ public class PurchaseService implements IPurchaseService {
 
 	@Override
 	public boolean save(PurchaseDto purchaseDto) {
-		Product product = productDao.get(purchaseDto.getProduct_ref(), Product.class);
+		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
 		return dao.save(purchase);
 	}
@@ -40,7 +40,7 @@ public class PurchaseService implements IPurchaseService {
 
 	@Override
 	public boolean update(PurchaseDto purchaseDto) {
-		Product product = productDao.get(purchaseDto.getProduct_ref(), Product.class);
+		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
 		return dao.update(purchase);
 	}

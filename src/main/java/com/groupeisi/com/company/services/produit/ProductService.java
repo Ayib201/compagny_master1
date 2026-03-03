@@ -4,9 +4,7 @@ import com.groupeisi.com.company.dao.product.IProductDao;
 import com.groupeisi.com.company.dao.product.ProductDao;
 import com.groupeisi.com.company.dto.ProductDto;
 import com.groupeisi.com.company.entities.Product;
-import com.groupeisi.com.company.entities.UserEntity;
 import com.groupeisi.com.company.mappers.ProductMapper;
-import com.groupeisi.com.company.mappers.UserMapper;
 
 import java.util.List;
 import java.util.Optional;

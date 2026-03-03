@@ -1,7 +1,6 @@
 package com.groupeisi.com.company.controllers;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import com.groupeisi.com.company.dto.UserDto;
 import com.groupeisi.com.company.services.user.IUserService;
@@ -18,11 +17,17 @@ import org.slf4j.LoggerFactory;
 @WebServlet(name = "admin", value = "/admin")
 public class AdminServlet extends HttpServlet {
 
-	private IUserService userService;
-	private final Logger logger = LoggerFactory.getLogger(AdminServlet.class);
+	private static final String REDIRECT_ADMIN = "admin";
+	private static final String ACTION_DELETE  = "delete";
+	private static final String ACTION_EDIT    = "edit";
+	private static final String ACTION_UPDATE  = "update";
+
+	private transient IUserService userService;
+	private static final Logger logger = LoggerFactory.getLogger(AdminServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
 		userService = new UserService();
 	}
 
@@ -32,26 +37,29 @@ public class AdminServlet extends HttpServlet {
 			String action = req.getParameter("action");
 			String email = req.getParameter("id");
 
-			if ("delete".equals(action) && email != null) {
+			if (ACTION_DELETE.equals(action) && email != null) {
 				userService.delete(email);
-				resp.sendRedirect("admin");
+				resp.sendRedirect(REDIRECT_ADMIN);
 				return;
 			}
 
-			if ("edit".equals(action) && email != null) {
-				userService.get(email).ifPresent(user ->
-						req.setAttribute("editUser", user)
-				);
+			if (ACTION_EDIT.equals(action) && email != null) {
+				userService.get(email)
+						.ifPresent(user -> req.setAttribute("editUser", user));
 			}
+
 			loadPage(req, resp);
+
 		} catch (Exception e) {
 			logger.error("Error : ", e);
 		}
 	}
 
-	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void loadPage(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		req.setAttribute("usersList", userService.getAll());
-		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp")
+				.forward(req, resp);
 	}
 
 	@Override
@@ -59,10 +67,10 @@ public class AdminServlet extends HttpServlet {
 		try {
 			String action = req.getParameter("action");
 
-			if ("delete".equals(action)) {
+			if (ACTION_DELETE.equals(action)) {
 				String email = req.getParameter("id");
 				userService.delete(email);
-				resp.sendRedirect("admin");
+				resp.sendRedirect(REDIRECT_ADMIN);
 				return;
 			}
 
@@ -74,13 +82,14 @@ public class AdminServlet extends HttpServlet {
 
 			UserDto userDto = new UserDto(email, firstName, lastName, password);
 
-			if ("update".equals(action) && id != null && !id.isEmpty()) {
+			if (ACTION_UPDATE.equals(action) && id != null && !id.isEmpty()) {
 				userService.update(userDto);
 			} else {
 				userService.save(userDto);
 			}
 
-			resp.sendRedirect("admin");
+			resp.sendRedirect(REDIRECT_ADMIN);
+
 		} catch (Exception e) {
 			logger.error("Error : ", e);
 		}

@@ -16,5 +16,5 @@ public class SaleDto {
     private Long id;
     private Date dateP;
     private double quantity;
-    private String product_ref;
+    private String productRef;
 }

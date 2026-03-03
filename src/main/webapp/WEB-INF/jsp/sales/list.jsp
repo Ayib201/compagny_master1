@@ -34,7 +34,7 @@
 							<td>${sale.id}</td>
 							<td>${sale.dateP}</td>
 							<td>${sale.quantity}</td>
-							<td>${fn:escapeXml(sale.product_ref)}</td>
+							<td>${fn:escapeXml(sale.productRef)}</td>
 							<td class="text-center">
 								<a href="sale?action=edit&id=${sale.id}"
 								   class="btn btn-sm btn-outline-warning me-1">
@@ -93,7 +93,7 @@
 								<option value="">Choisissez un produit</option>
 								<c:forEach items="${productsList}" var="product">
 									<option value="${fn:escapeXml(product.ref)}"
-										${editSale != null && editSale.product_ref == product.name ? 'selected' : ''}>
+										${editSale != null && editSale.productRef == product.name ? 'selected' : ''}>
 											${fn:escapeXml(product.name)} (${fn:escapeXml(product.ref)})
 									</option>
 								</c:forEach>

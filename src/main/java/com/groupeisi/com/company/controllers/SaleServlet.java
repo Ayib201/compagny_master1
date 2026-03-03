@@ -22,9 +22,10 @@ import java.util.Date;
 @WebServlet(name = "sale", value = "/sale")
 public class SaleServlet extends HttpServlet {
 
-	private ISaleService saleService;
-	private ProductService productService;
-	private final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
+	private transient ISaleService saleService;
+	private transient ProductService productService;
+	private static final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
+	private static final String KEY_MESSAGE  = "errorMessage";
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -54,7 +55,11 @@ public class SaleServlet extends HttpServlet {
 			loadPage(req, resp);
 		} catch (Exception e) {
 			logger.error("Error loading Sale list", e);
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
+			try {
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (IOException ioException) {
+				logger.error("Failed to send error response", ioException);
+			}
 		}
 	}
 
@@ -67,6 +72,16 @@ public class SaleServlet extends HttpServlet {
 	private Date parseDate(String dateStr) throws ParseException {
 		if (dateStr == null || dateStr.isEmpty()) return null;
 		return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+	}
+
+	private Date parseDateOrShowError(HttpServletRequest req, HttpServletResponse resp, String dateStr) throws ServletException, IOException {
+		try {
+			return parseDate(dateStr);
+		} catch (ParseException e) {
+			req.setAttribute(KEY_MESSAGE, "Date invalide.");
+			loadPage(req, resp);
+			return null;
+		}
 	}
 
 	@Override
@@ -85,17 +100,13 @@ public class SaleServlet extends HttpServlet {
 				return;
 			}
 
-			Date dateP;
-			try {
-				dateP = parseDate(dateStr);
-			} catch (ParseException e) {
-				req.setAttribute("errorMessage", "Date invalide.");
-				loadPage(req, resp);
-				return;
+			Date dateP = parseDateOrShowError(req, resp, dateStr);
+			if (dateP == null) {
+				return; // l'erreur a déjà été affichée
 			}
 
 			if (productRef == null || productRef.isEmpty()) {
-				req.setAttribute("errorMessage", "Référence produit obligatoire.");
+				req.setAttribute(KEY_MESSAGE, "Référence produit obligatoire.");
 				loadPage(req, resp);
 				return;
 			}
@@ -103,7 +114,7 @@ public class SaleServlet extends HttpServlet {
 			SaleDto saleDto = SaleDto.builder()
 					.dateP(dateP)
 					.quantity(Double.parseDouble(quantityStr))
-					.product_ref(productRef)
+					.productRef(productRef)
 					.build();
 
 			if ("update".equals(action) && idParam != null && !idParam.isEmpty()) {
@@ -116,7 +127,11 @@ public class SaleServlet extends HttpServlet {
 			resp.sendRedirect("sale");
 		} catch (Exception e) {
 			logger.error("Error saving Sale", e);
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
+			try {
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (IOException ioException) {
+				logger.error("Failed to send error response", ioException);
+			}
 		}
 	}
 }

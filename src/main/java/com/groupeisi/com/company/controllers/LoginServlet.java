@@ -19,11 +19,12 @@ import org.slf4j.LoggerFactory;
 @WebServlet(name = "login", value = "/login")
 public class LoginServlet extends HttpServlet {
 
-	private final Logger log = LoggerFactory.getLogger(LoginServlet.class);
-	private IUserService userService;
+	private static final Logger log = LoggerFactory.getLogger(LoginServlet.class);
+	private transient IUserService userService;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
 		userService = new UserService();
 	}
 	
@@ -51,8 +52,12 @@ public class LoginServlet extends HttpServlet {
 				resp.sendRedirect("welcome");
 			}
 		} catch (Exception e) {
-			resp.sendRedirect("login");
-			log.error("Erreur", e);
+			log.error("Erreur lors du login", e);
+			try {
+				resp.sendRedirect("login");
+			} catch (IOException ioException) {
+				log.error("Erreur de redirection", ioException);
+			}
 		}
 	}
 }

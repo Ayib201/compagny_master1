@@ -17,8 +17,13 @@ import java.io.IOException;
 @WebServlet(name = "produit", value = "/produit")
 public class ProductServlet extends HttpServlet {
 
-	private IProductService productService;
-	private final Logger logger = LoggerFactory.getLogger(ProductServlet.class);
+	private static final String ACTION_DELETE     = "delete";
+	private static final String ACTION_EDIT       = "edit";
+	private static final String ACTION_UPDATE     = "update";
+	private static final String REDIRECT_PRODUIT  = "produit";
+
+	private transient IProductService productService;
+	private static final Logger logger = LoggerFactory.getLogger(ProductServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -27,76 +32,82 @@ public class ProductServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
 		try {
 			String action = req.getParameter("action");
 			String ref    = req.getParameter("id");
 
-			if ("delete".equals(action) && ref != null) {
+			if (ACTION_DELETE.equals(action) && ref != null) {
 				productService.delete(ref);
-				resp.sendRedirect("produit");
+				resp.sendRedirect(REDIRECT_PRODUIT);
 				return;
 			}
 
-			if ("edit".equals(action) && ref != null) {
-				productService.get(ref).ifPresent(p ->
-						req.setAttribute("editProduct", p)
-				);
+			if (ACTION_EDIT.equals(action) && ref != null) {
+				productService.get(ref)
+						.ifPresent(p -> req.setAttribute("editProduct", p));
 			}
 
 			loadPage(req, resp);
+
 		} catch (Exception e) {
 			logger.error("Error loading product list", e);
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
+			try {
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (IOException ioException) {
+				logger.error("Failed to send error response", ioException);
+			}
 		}
 	}
 
-	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void loadPage(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
 		req.setAttribute("productsList", productService.getAll());
-		req.getRequestDispatcher("WEB-INF/jsp/products/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("WEB-INF/jsp/products/list.jsp")
+				.forward(req, resp);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
 		try {
-			String action  = req.getParameter("action");
-			String id      = req.getParameter("id");
-			String name    = req.getParameter("name");
-			String ref     = req.getParameter("ref");
+			String action   = req.getParameter("action");
+			String id       = req.getParameter("id");
+			String name     = req.getParameter("name");
+			String ref      = req.getParameter("ref");
 			String stockStr = req.getParameter("stock");
 
-			double stock = 0;
-			try {
-				stock = Double.parseDouble(stockStr);
-			} catch (NumberFormatException e) {
-				logger.warn("Invalid stock value: {}", stockStr);
-				req.setAttribute("errorMessage", "Stock must be a number.");
-				loadPage(req, resp);
-				return;
-			}
-
-			if ("delete".equals(action) && id != null) {
+			if (ACTION_DELETE.equals(action) && id != null) {
 				productService.delete(id);
-				resp.sendRedirect("produit");
+				resp.sendRedirect(REDIRECT_PRODUIT);
 				return;
 			}
 
 			ProductDto productDto = ProductDto.builder()
 					.name(name)
 					.ref(ref)
-					.stock(stock)
+					.stock(Double.parseDouble(stockStr))
 					.build();
 
-			if ("update".equals(action) && id != null && !id.isEmpty()) {
+			if (ACTION_UPDATE.equals(action) && id != null && !id.isEmpty()) {
 				productService.update(productDto);
 			} else {
 				productService.save(productDto);
 			}
 
-			resp.sendRedirect("produit");
+			resp.sendRedirect(REDIRECT_PRODUIT);
+
 		} catch (Exception e) {
 			logger.error("Error saving product", e);
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
+			try {
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} catch (IOException ioException) {
+				logger.error("Failed to send error response", ioException);
+			}
 		}
 	}
 }

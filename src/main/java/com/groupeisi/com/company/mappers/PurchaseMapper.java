@@ -24,7 +24,7 @@ public class PurchaseMapper {
                 .id(purchase.getId())
                 .dateP(purchase.getDateP())
                 .quantity(purchase.getQuantity())
-                .product_ref(purchase.getProduct().getName())
+                .productRef(purchase.getProduct().getName())
                 .build();
     }
 

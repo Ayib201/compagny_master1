@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "welcome", value = "/welcome")
 public class WelcomeServlet extends HttpServlet {
 
-	private final Logger log = LoggerFactory.getLogger(WelcomeServlet.class);
+	private static final Logger log = LoggerFactory.getLogger(WelcomeServlet.class);
 
 
 	@Override

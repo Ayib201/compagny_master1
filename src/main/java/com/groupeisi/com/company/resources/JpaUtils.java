@@ -8,6 +8,9 @@ public class JpaUtils {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("companyPU");
 
+    private JpaUtils() {
+
+    }
     public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }

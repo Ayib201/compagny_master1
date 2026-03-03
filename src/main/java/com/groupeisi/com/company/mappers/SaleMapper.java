@@ -24,7 +24,7 @@ public class SaleMapper {
                 .id(sale.getId())
                 .dateP(sale.getDateP())
                 .quantity(sale.getQuantity())
-                .product_ref(sale.getProduct().getName())
+                .productRef(sale.getProduct().getName())
                 .build();
     }
 

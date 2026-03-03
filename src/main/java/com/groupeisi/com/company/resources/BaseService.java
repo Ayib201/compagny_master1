@@ -6,7 +6,7 @@ import jakarta.persistence.EntityTransaction;
 public abstract class BaseService {
     protected EntityManager em ;
     protected EntityTransaction et;
-    public BaseService() {
+    protected BaseService() {
         this.em = JpaUtils.getEntityManager();
         this.et = em.getTransaction();
     }

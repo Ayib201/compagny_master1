@@ -35,7 +35,7 @@
 							<td>${purchase.id}</td>
 							<td>${purchase.dateP}</td>
 							<td>${purchase.quantity}</td>
-							<td>${fn:escapeXml(purchase.product_ref)}</td>
+							<td>${fn:escapeXml(purchase.productRef)}</td>
 							<td class="text-center">
 								<a href="purchase?action=edit&id=${purchase.id}"
 								   class="btn btn-sm btn-outline-warning me-1">
@@ -107,7 +107,7 @@
 
 						<!-- PRODUCT -->
 						<div class="col-md-4">
-							<label for="selectProduct" class="form-label">Produit ${editPurchase.product_ref}</label>
+							<label for="selectProduct" class="form-label">Produit ${editPurchase.productRef}</label>
 							<select name="product_ref"
 									id="selectProduct"
 									class="form-select"
@@ -115,7 +115,7 @@
 								<option value="">Choisissez un produit</option>
 								<c:forEach items="${productsList}" var="product">
 									<option value="${fn:escapeXml(product.ref)}"
-										${editPurchase != null && editPurchase.product_ref eq product.name ? 'selected' : ''}>
+										${editPurchase != null && editPurchase.productRef eq product.name ? 'selected' : ''}>
 											${fn:escapeXml(product.name)} (${fn:escapeXml(product.ref)})
 									</option>
 								</c:forEach>

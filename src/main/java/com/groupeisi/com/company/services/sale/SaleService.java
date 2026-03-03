@@ -27,7 +27,7 @@ public class SaleService implements ISaleService {
 
 	@Override
 	public boolean save(SaleDto saleDto) {
-		Product product = productDao.get(saleDto.getProduct_ref(), Product.class);
+		Product product = productDao.get(saleDto.getProductRef(), Product.class);
 		Sales sales = SaleMapper.toSale(saleDto, product);
 		return saleDao.save(sales);
 	}
@@ -39,7 +39,7 @@ public class SaleService implements ISaleService {
 
 	@Override
 	public boolean update(SaleDto saleDto) {
-		Product product = productDao.get(saleDto.getProduct_ref(), Product.class);
+		Product product = productDao.get(saleDto.getProductRef(), Product.class);
 		Sales sale = SaleMapper.toSale(saleDto, product);
 		return saleDao.update(sale);
 	}
