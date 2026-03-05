@@ -25,7 +25,6 @@ public class SaleServlet extends HttpServlet {
 	private transient IProductService productService;
 	private transient IUserService userService;
 	private static final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
-	private static final String KEY_MESSAGE = "errorMessage";
 	private static final String REDIRECT_SALE = "sale";
 
 	@Override
@@ -37,7 +36,7 @@ public class SaleServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			SaleRequest request = SaleRequest.from(req);
 
@@ -56,13 +55,11 @@ public class SaleServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			logger.error("Erreur chargement liste ventes", e);
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
 		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			SaleRequest request = SaleRequest.from(req);
 
@@ -83,8 +80,7 @@ public class SaleServlet extends HttpServlet {
 			resp.sendRedirect(REDIRECT_SALE);
 
 		} catch (Exception e) {
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
+			logger.error("Erreur chargement liste ventes", e);
 		}
 	}
 

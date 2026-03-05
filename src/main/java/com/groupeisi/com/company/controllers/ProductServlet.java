@@ -36,7 +36,7 @@ public class ProductServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			ProduitRequest request = ProduitRequest.from(req);
 			if (request.isDelete()) {
@@ -54,15 +54,13 @@ public class ProductServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			logger.error("Erreur chargement liste produits", e);
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
 		}
 	}
 
 	// ── POST ──────────────────────────────────────────────────────────
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			ProduitRequest request = ProduitRequest.from(req);
 
@@ -87,8 +85,7 @@ public class ProductServlet extends HttpServlet {
 			resp.sendRedirect(REDIRECT_PRODUIT);
 
 		} catch (Exception e) {
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
+			logger.error("Erreur chargement liste produits", e);
 		}
 	}
 

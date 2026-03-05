@@ -23,8 +23,6 @@ import java.io.IOException;
 public class PurchaseServlet extends HttpServlet {
 
 	private static final String REDIRECT_PURCHASE = "purchase";
-	private static final String KEY_MESSAGE       = "errorMessage";
-
 	private transient IPurchaseService purchaseService;
 	private transient IProductService  productService;
 	private transient IUserService     userService;
@@ -42,7 +40,7 @@ public class PurchaseServlet extends HttpServlet {
 	// ── GET ───────────────────────────────────────────────────────────
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			PurchaseRequest request = PurchaseRequest.from(req);
 
@@ -61,24 +59,17 @@ public class PurchaseServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			logger.error("Erreur chargement liste achats", e);
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
 		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			PurchaseRequest request = PurchaseRequest.from(req);
 
 			if (request.isDelete()) {
-				try {
-					purchaseService.delete(request.validateId());
-					resp.sendRedirect(REDIRECT_PURCHASE);
-				} catch (Exception e) {
-                    logger.error("Erreur suppression achats id ={}", request.validateId(), e);
-					req.setAttribute(KEY_MESSAGE, "Impossible de supprimer ce produit.");
-				}
+				purchaseService.delete(request.validateId());
+				resp.sendRedirect(REDIRECT_PURCHASE);
 				return;
 			}
 
@@ -94,8 +85,6 @@ public class PurchaseServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			logger.error("Erreur inattendue dans doGet", e);
-			req.setAttribute(KEY_MESSAGE, "Une erreur est survenue lors du chargement de la page.");
-			loadPage(req, resp);
 		}
 	}
 

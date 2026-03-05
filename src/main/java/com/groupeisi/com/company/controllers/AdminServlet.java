@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 public class AdminServlet extends HttpServlet {
 
 	private static final String REDIRECT_ADMIN = "admin";
-	private static final String KEY_MESSAGE    = "errorMessage";
 
 	private transient IUserService userService;
 	private static final Logger logger = LoggerFactory.getLogger(AdminServlet.class);
@@ -31,7 +30,7 @@ public class AdminServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			UserRequest request = UserRequest.from(req);
 
@@ -50,15 +49,11 @@ public class AdminServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			logger.error("Erreur chargement liste utilisateurs", e);
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
 		}
 	}
 
-	// ── POST ──────────────────────────────────────────────────────────
-
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			UserRequest request = UserRequest.from(req);
 
@@ -79,8 +74,7 @@ public class AdminServlet extends HttpServlet {
 			resp.sendRedirect(REDIRECT_ADMIN);
 
 		} catch (Exception e) {
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
-			loadPage(req, resp);
+			logger.error("Erreur chargement liste utilisateurs", e);
 		}
 	}
 
