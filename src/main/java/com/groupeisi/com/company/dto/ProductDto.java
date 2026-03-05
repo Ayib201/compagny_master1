@@ -12,4 +12,5 @@ public class ProductDto {
     private String ref;
     private String name;
     private double stock;
+    private String userEmail;
 }

@@ -4,21 +4,26 @@ import com.groupeisi.com.company.dao.product.IProductDao;
 import com.groupeisi.com.company.dao.product.ProductDao;
 import com.groupeisi.com.company.dao.purchase.IPurchaseDao;
 import com.groupeisi.com.company.dao.purchase.PurchaseDao;
+import com.groupeisi.com.company.dao.user.IUserDao;
+import com.groupeisi.com.company.dao.user.UserDao;
 import com.groupeisi.com.company.dto.PurchaseDto;
 import com.groupeisi.com.company.entities.Product;
 import com.groupeisi.com.company.entities.Purchases;
+import com.groupeisi.com.company.entities.UserEntity;
 import com.groupeisi.com.company.mappers.PurchaseMapper;
 
 import java.util.List;
 import java.util.Optional;
 
 public class PurchaseService implements IPurchaseService {
-
+	private final IUserDao userDao;
 	private final IProductDao productDao;
-	private final IPurchaseDao dao = new PurchaseDao();
+	private final IPurchaseDao dao;
 
-	public PurchaseService(ProductDao productDao) {
-		this.productDao = productDao;
+	public PurchaseService() {
+		this.productDao = new ProductDao();
+		this.userDao = new UserDao();
+		this.dao = new PurchaseDao();
 	}
 
 	@Override
@@ -29,7 +34,8 @@ public class PurchaseService implements IPurchaseService {
 	@Override
 	public boolean save(PurchaseDto purchaseDto) {
 		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
-		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
+		UserEntity user = userDao.get(purchaseDto.getUserEmail(), UserEntity.class);
+		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product, user);
 		return dao.save(purchase);
 	}
 
@@ -41,7 +47,8 @@ public class PurchaseService implements IPurchaseService {
 	@Override
 	public boolean update(PurchaseDto purchaseDto) {
 		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
-		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product);
+		UserEntity user = userDao.get(purchaseDto.getUserEmail(), UserEntity.class);
+		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product, user);
 		return dao.update(purchase);
 	}
 

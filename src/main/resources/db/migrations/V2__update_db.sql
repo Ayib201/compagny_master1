@@ -1,0 +1,20 @@
+ALTER TABLE Purchases
+    ADD user_email VARCHAR(250);
+
+ALTER TABLE Purchases
+    ALTER COLUMN date_p SET NOT NULL;
+
+ALTER TABLE Product
+    ADD user_email VARCHAR(250);
+
+ALTER TABLE Sales
+    ADD user_email VARCHAR(250);
+
+ALTER TABLE Product
+    ADD CONSTRAINT FK_PRODUCT_ON_USER_EMAIL FOREIGN KEY (user_email) REFERENCES UserEntity (email);
+
+ALTER TABLE Purchases
+    ADD CONSTRAINT FK_PURCHASES_ON_USER_EMAIL FOREIGN KEY (user_email) REFERENCES UserEntity (email);
+
+ALTER TABLE Sales
+    ADD CONSTRAINT FK_SALES_ON_USER_EMAIL FOREIGN KEY (user_email) REFERENCES UserEntity (email);

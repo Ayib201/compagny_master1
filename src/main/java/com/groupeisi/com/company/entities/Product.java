@@ -1,8 +1,6 @@
 package com.groupeisi.com.company.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -20,4 +18,7 @@ public class Product implements Serializable {
     @Column(nullable = false,unique = true)
     private String name;
     private double stock;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    private UserEntity user;
 }

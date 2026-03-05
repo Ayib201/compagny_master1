@@ -2,6 +2,7 @@ package com.groupeisi.com.company.mappers;
 
 import com.groupeisi.com.company.dto.ProductDto;
 import com.groupeisi.com.company.entities.Product;
+import com.groupeisi.com.company.entities.UserEntity;
 
 import java.util.List;
 
@@ -25,15 +26,17 @@ public class ProductMapper {
                 .ref(product.getRef())
                 .name(product.getName())
                 .stock(product.getStock())
+                .userEmail(product.getUser().getEmail())
                 .build();
     }
 
-    public static Product toProduct(ProductDto productDto) {
+    public static Product toProduct(ProductDto productDto, UserEntity user) {
 
         return Product.builder()
                 .ref(productDto.getRef())
                 .name(productDto.getName())
                 .stock(productDto.getStock())
+                .user(user)
                 .build();
     }
 }

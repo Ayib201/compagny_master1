@@ -25,6 +25,7 @@
 						<th>Date Péremption</th>
 						<th>Quantité</th>
 						<th>Produit</th>
+						<th>User</th>
 						<th class="text-center">Actions</th>
 					</tr>
 					</thead>
@@ -35,6 +36,7 @@
 							<td>${sale.dateP}</td>
 							<td>${sale.quantity}</td>
 							<td>${fn:escapeXml(sale.productRef)}</td>
+							<td>${fn:escapeXml(sale.userEmail)}</td>
 							<td class="text-center">
 								<a href="sale?action=edit&id=${sale.id}"
 								   class="btn btn-sm btn-outline-warning me-1">
@@ -105,7 +107,20 @@
 								<div class="alert alert-danger py-2 mb-0">${errorMessage}</div>
 							</div>
 						</c:if>
-
+						<!-- après le select produit, avant le errorMessage -->
+						<div class="col-md-4">
+							<label for="selectUser" class="form-label">Utilisateur</label>
+							<select name="email" id="selectUser" class="form-select" required>
+								<option value="">Choisissez un utilisateur</option>
+								<c:forEach items="${usersList}" var="user">
+									<option value="${fn:escapeXml(user.email)}"
+										${editSale != null && editSale.userEmail eq user.email ? 'selected' : ''}>
+											${fn:escapeXml(user.firstName)} ${fn:escapeXml(user.lastName)}
+										(${fn:escapeXml(user.email)})
+									</option>
+								</c:forEach>
+							</select>
+						</div>
 						<div class="col-12 d-flex gap-2">
 							<button type="submit" class="btn ${editSale != null ? 'btn-warning' : 'btn-primary'}">
 								<i class="bi ${editSale != null ? 'bi-save' : 'bi-plus-circle'} me-1"></i>

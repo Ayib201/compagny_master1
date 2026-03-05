@@ -17,4 +17,5 @@ public class SaleDto {
     private Date dateP;
     private double quantity;
     private String productRef;
+    private String userEmail;
 }

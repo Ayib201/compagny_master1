@@ -25,4 +25,7 @@ public class Purchases implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    private UserEntity user;
 }

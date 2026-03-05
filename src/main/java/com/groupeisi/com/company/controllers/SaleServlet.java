@@ -1,10 +1,13 @@
 package com.groupeisi.com.company.controllers;
 
-import com.groupeisi.com.company.dao.product.ProductDao;
 import com.groupeisi.com.company.dto.SaleDto;
+import com.groupeisi.com.company.requests.SaleRequest;
+import com.groupeisi.com.company.services.produit.IProductService;
 import com.groupeisi.com.company.services.produit.ProductService;
 import com.groupeisi.com.company.services.sale.ISaleService;
 import com.groupeisi.com.company.services.sale.SaleService;
+import com.groupeisi.com.company.services.user.IUserService;
+import com.groupeisi.com.company.services.user.UserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,125 +16,82 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @WebServlet(name = "sale", value = "/sale")
 public class SaleServlet extends HttpServlet {
 
 	private transient ISaleService saleService;
-	private transient ProductService productService;
+	private transient IProductService productService;
+	private transient IUserService userService;
 	private static final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
-	private static final String KEY_MESSAGE  = "errorMessage";
+	private static final String KEY_MESSAGE = "errorMessage";
+	private static final String REDIRECT_SALE = "sale";
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		this.productService = new ProductService();
-		this.saleService    = new SaleService(new ProductDao());
+		this.saleService    = new SaleService();
+		this.userService    = new UserService();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			String action  = req.getParameter("action");
-			String idParam = req.getParameter("id");
+			SaleRequest request = SaleRequest.from(req);
 
-			if ("delete".equals(action) && idParam != null) {
-				saleService.delete(Long.parseLong(idParam));
-				resp.sendRedirect("sale");
+			if (request.isDelete()) {
+				saleService.delete(request.validateId());
+				resp.sendRedirect(REDIRECT_SALE);
 				return;
 			}
 
-			if ("edit".equals(action) && idParam != null) {
-				saleService.get(Long.parseLong(idParam)).ifPresent(s ->
-						req.setAttribute("editSale", s)
-				);
+			if (request.isUpdate()) {
+				saleService.get(request.validateId())
+						.ifPresent(s -> req.setAttribute("editSale", s));
 			}
 
 			loadPage(req, resp);
+
 		} catch (Exception e) {
-			logger.error("Error loading Sale list", e);
-			try {
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			} catch (IOException ioException) {
-				logger.error("Failed to send error response", ioException);
-			}
-		}
-	}
-
-	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("salesList",    saleService.getAll());
-		req.setAttribute("productsList", productService.getAll());
-		req.getRequestDispatcher("WEB-INF/jsp/sales/list.jsp").forward(req, resp);
-	}
-
-	private Date parseDate(String dateStr) throws ParseException {
-		if (dateStr == null || dateStr.isEmpty()) return null;
-		return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
-	}
-
-	private Date parseDateOrShowError(HttpServletRequest req, HttpServletResponse resp, String dateStr) throws ServletException, IOException {
-		try {
-			return parseDate(dateStr);
-		} catch (ParseException e) {
-			req.setAttribute(KEY_MESSAGE, "Date invalide.");
+			logger.error("Erreur chargement liste ventes", e);
+			req.setAttribute(KEY_MESSAGE, e.getMessage());
 			loadPage(req, resp);
-			return null;
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			String action      = req.getParameter("action");
-			String idParam     = req.getParameter("id");
-			String dateStr     = req.getParameter("dateP");
-			String quantityStr = req.getParameter("quantity");
-			String productRef  = req.getParameter("product_ref");
+			SaleRequest request = SaleRequest.from(req);
 
-			// Delete via POST
-			if ("delete".equals(action) && idParam != null) {
-				saleService.delete(Long.parseLong(idParam));
-				resp.sendRedirect("sale");
+			if (request.isDelete()) {
+				saleService.delete(request.validateId());
+				resp.sendRedirect(REDIRECT_SALE);
 				return;
 			}
 
-			Date dateP = parseDateOrShowError(req, resp, dateStr);
-			if (dateP == null) {
-				return; // l'erreur a déjà été affichée
+			SaleDto dto = request.toDto();
+
+			if (request.isUpdate()) {
+				saleService.update(dto);
+			} else if (request.isCreate()) {
+				saleService.save(dto);
 			}
 
-			if (productRef == null || productRef.isEmpty()) {
-				req.setAttribute(KEY_MESSAGE, "Référence produit obligatoire.");
-				loadPage(req, resp);
-				return;
-			}
+			resp.sendRedirect(REDIRECT_SALE);
 
-			SaleDto saleDto = SaleDto.builder()
-					.dateP(dateP)
-					.quantity(Double.parseDouble(quantityStr))
-					.productRef(productRef)
-					.build();
-
-			if ("update".equals(action) && idParam != null && !idParam.isEmpty()) {
-				saleDto.setId(Long.parseLong(idParam));
-				saleService.update(saleDto);
-			} else {
-				saleService.save(saleDto);
-			}
-
-			resp.sendRedirect("sale");
 		} catch (Exception e) {
-			logger.error("Error saving Sale", e);
-			try {
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			} catch (IOException ioException) {
-				logger.error("Failed to send error response", ioException);
-			}
+			req.setAttribute(KEY_MESSAGE, e.getMessage());
+			loadPage(req, resp);
 		}
+	}
+
+	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("salesList",    saleService.getAll());
+		req.setAttribute("productsList", productService.getAll());
+		req.setAttribute("usersList",    userService.getAll());
+		req.getRequestDispatcher("WEB-INF/jsp/sales/list.jsp").forward(req, resp);
 	}
 }

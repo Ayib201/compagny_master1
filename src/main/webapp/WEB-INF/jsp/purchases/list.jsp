@@ -26,6 +26,7 @@
 						<th>Date Péremption</th>
 						<th>Quantité</th>
 						<th>Produit</th>
+						<th>User</th>
 						<th class="text-center">Actions</th>
 					</tr>
 					</thead>
@@ -36,6 +37,7 @@
 							<td>${purchase.dateP}</td>
 							<td>${purchase.quantity}</td>
 							<td>${fn:escapeXml(purchase.productRef)}</td>
+							<td>${fn:escapeXml(purchase.userEmail)}</td>
 							<td class="text-center">
 								<a href="purchase?action=edit&id=${purchase.id}"
 								   class="btn btn-sm btn-outline-warning me-1">
@@ -131,7 +133,20 @@
 								</div>
 							</div>
 						</c:if>
-
+						<!-- après le select produit, avant le errorMessage -->
+						<div class="col-md-4">
+							<label for="selectUser" class="form-label">Utilisateur</label>
+							<select name="email" id="selectUser" class="form-select" required>
+								<option value="">Choisissez un utilisateur</option>
+								<c:forEach items="${usersList}" var="user">
+									<option value="${fn:escapeXml(user.email)}"
+										${editPurchase != null && editPurchase.userEmail eq user.email ? 'selected' : ''}>
+											${fn:escapeXml(user.firstName)} ${fn:escapeXml(user.lastName)}
+										(${fn:escapeXml(user.email)})
+									</option>
+								</c:forEach>
+							</select>
+						</div>
 						<!-- BUTTONS -->
 						<div class="col-12 d-flex gap-2">
 

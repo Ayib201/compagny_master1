@@ -30,4 +30,7 @@ public class Sales implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    private UserEntity user;
 }
