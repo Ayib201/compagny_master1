@@ -5,6 +5,8 @@ import com.groupeisi.com.company.entities.Product;
 import com.groupeisi.com.company.entities.Purchases;
 import com.groupeisi.com.company.entities.UserEntity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PurchaseMapper {
@@ -23,17 +25,17 @@ public class PurchaseMapper {
         return PurchaseDto
                 .builder()
                 .id(purchase.getId())
-                .dateP(purchase.getDateP())
+                .dateP(String.valueOf(purchase.getDateP()))
                 .quantity(purchase.getQuantity())
                 .productRef(purchase.getProduct().getName())
                 .userEmail(purchase.getUser().getEmail())
                 .build();
     }
 
-    public static Purchases toPurchase(PurchaseDto purchaseDto, Product product, UserEntity user) {
+    public static Purchases toPurchase(PurchaseDto purchaseDto, Product product, UserEntity user) throws ParseException {
         return Purchases.builder()
                 .id(purchaseDto.getId())
-                .dateP(purchaseDto.getDateP())
+                .dateP(new SimpleDateFormat("yyyy-MM-dd").parse(purchaseDto.getDateP()))
                 .quantity(purchaseDto.getQuantity())
                 .product(product)
                 .user(user)

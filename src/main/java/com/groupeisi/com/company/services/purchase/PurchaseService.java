@@ -12,6 +12,7 @@ import com.groupeisi.com.company.entities.Purchases;
 import com.groupeisi.com.company.entities.UserEntity;
 import com.groupeisi.com.company.mappers.PurchaseMapper;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class PurchaseService implements IPurchaseService {
 	}
 
 	@Override
-	public boolean save(PurchaseDto purchaseDto) {
+	public boolean save(PurchaseDto purchaseDto) throws ParseException {
 		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
 		UserEntity user = userDao.get(purchaseDto.getUserEmail(), UserEntity.class);
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product, user);
@@ -45,7 +46,7 @@ public class PurchaseService implements IPurchaseService {
 	}
 
 	@Override
-	public boolean update(PurchaseDto purchaseDto) {
+	public boolean update(PurchaseDto purchaseDto) throws ParseException {
 		Product product = productDao.get(purchaseDto.getProductRef(), Product.class);
 		UserEntity user = userDao.get(purchaseDto.getUserEmail(), UserEntity.class);
 		Purchases purchase = PurchaseMapper.toPurchase(purchaseDto, product, user);

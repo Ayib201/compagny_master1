@@ -66,8 +66,6 @@ public class PurchaseServlet extends HttpServlet {
 		}
 	}
 
-	// ── POST ──────────────────────────────────────────────────────────
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
@@ -100,8 +98,6 @@ public class PurchaseServlet extends HttpServlet {
 			loadPage(req, resp);
 		}
 	}
-
-	// ── Chargement page ───────────────────────────────────────────────
 
 	private void loadPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("purchasesList", purchaseService.getAll());

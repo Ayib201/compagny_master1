@@ -12,6 +12,7 @@ import com.groupeisi.com.company.entities.Sales;
 import com.groupeisi.com.company.entities.UserEntity;
 import com.groupeisi.com.company.mappers.SaleMapper;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class SaleService implements ISaleService {
 	}
 
 	@Override
-	public boolean save(SaleDto saleDto) {
+	public boolean save(SaleDto saleDto) throws ParseException {
 		Product product = productDao.get(saleDto.getProductRef(), Product.class);
 		UserEntity user = userDao.get(saleDto.getUserEmail(), UserEntity.class);
 		Sales sales = SaleMapper.toSale(saleDto, product, user);
@@ -44,7 +45,7 @@ public class SaleService implements ISaleService {
 	}
 
 	@Override
-	public boolean update(SaleDto saleDto) {
+	public boolean update(SaleDto saleDto) throws ParseException {
 		Product product = productDao.get(saleDto.getProductRef(), Product.class);
 		UserEntity user = userDao.get(saleDto.getUserEmail(), UserEntity.class);
 		Sales sale = SaleMapper.toSale(saleDto, product, user);

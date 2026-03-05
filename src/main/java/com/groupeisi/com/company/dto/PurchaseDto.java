@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PurchaseDto {
     private Long id;
-    private Date dateP;
+    private String dateP;
     private double quantity;
     private String productRef;
     private String userEmail;

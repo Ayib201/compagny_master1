@@ -36,13 +36,13 @@ public class AdminServlet extends HttpServlet {
 			UserRequest request = UserRequest.from(req);
 
 			if (request.isDelete()) {
-				userService.delete(request.validateId());
+				userService.delete(request.getEmail());
 				resp.sendRedirect(REDIRECT_ADMIN);
 				return;
 			}
 
 			if (request.isEdit()) {
-				userService.get(request.validateId())
+				userService.get(request.getEmail())
 						.ifPresent(user -> req.setAttribute("editUser", user));
 			}
 
@@ -63,7 +63,7 @@ public class AdminServlet extends HttpServlet {
 			UserRequest request = UserRequest.from(req);
 
 			if (request.isDelete()) {
-				userService.delete(request.validateId());
+				userService.delete(request.getEmail());
 				resp.sendRedirect(REDIRECT_ADMIN);
 				return;
 			}

@@ -4,10 +4,6 @@ import com.groupeisi.com.company.dto.PurchaseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Data
 public class PurchaseRequest {
 
@@ -43,41 +39,12 @@ public class PurchaseRequest {
         return "delete".equals(action);
     }
 
-    // ── Validations individuelles ─────────────────────────────────────
-
-    private String validateEmail() throws Exception {
-        if (email == null || email.isBlank())
-            throw new Exception("Email obligatoire");
-        if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"))
-            throw new Exception("Email invalide");
-        return email;
-    }
-
-    private String validateProductRef() throws Exception {
-        if (productRef == null || productRef.isBlank())
-            throw new Exception("Référence produit obligatoire");
-        return productRef;
-    }
-
-    private double validateQuantity() throws Exception {
-        if (quantity == null || quantity.isBlank())
-            throw new Exception("Quantité obligatoire");
+    public Long parseIdOrNull() throws Exception {
+        if (id == null || id.isBlank()) return null;
         try {
-            double q = Double.parseDouble(quantity);
-            if (q <= 0) throw new Exception("La quantité doit être supérieure à zéro");
-            return q;
+            return Long.parseLong(id);
         } catch (NumberFormatException e) {
-            throw new Exception("Quantité invalide");
-        }
-    }
-
-    private Date validateDate() throws Exception {
-        if (dateP == null || dateP.isBlank())
-            throw new Exception("Date obligatoire");
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd").parse(dateP);
-        } catch (ParseException e) {
-            throw new Exception("Date invalide");
+            throw new Exception("ID invalide");
         }
     }
 
@@ -91,23 +58,12 @@ public class PurchaseRequest {
         }
     }
 
-    public Long parseIdOrNull() throws Exception {
-        if (id == null || id.isBlank()) return null;
-        try {
-            return Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            throw new Exception("ID invalide");
-        }
-    }
-
-    // ── Construction du DTO ───────────────────────────────────────────
-
     public PurchaseDto toDto() throws Exception {
         PurchaseDto dto = PurchaseDto.builder()
-                .userEmail(validateEmail())
-                .productRef(validateProductRef())
-                .quantity(validateQuantity())
-                .dateP(validateDate())
+                .userEmail(email)
+                .productRef(productRef)
+                .quantity(Double.parseDouble(quantity))
+                .dateP(dateP)
                 .build();
 
         Long parsedId = parseIdOrNull();
