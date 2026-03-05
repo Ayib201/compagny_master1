@@ -52,7 +52,7 @@ public class PurchaseServlet extends HttpServlet {
 				return;
 			}
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				purchaseService.get(request.validateId())
 						.ifPresent(p -> req.setAttribute("editPurchase", p));
 			}
@@ -81,7 +81,7 @@ public class PurchaseServlet extends HttpServlet {
 
 			PurchaseDto dto = request.toDto();
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				purchaseService.update(dto);
 			} else if (request.isCreate()) {
 				purchaseService.save(dto);

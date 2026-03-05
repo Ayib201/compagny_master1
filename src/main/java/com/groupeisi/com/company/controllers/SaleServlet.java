@@ -47,7 +47,7 @@ public class SaleServlet extends HttpServlet {
 				return;
 			}
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				saleService.get(request.validateId())
 						.ifPresent(s -> req.setAttribute("editSale", s));
 			}
@@ -74,7 +74,7 @@ public class SaleServlet extends HttpServlet {
 
 			SaleDto dto = request.toDto();
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				saleService.update(dto);
 			} else if (request.isCreate()) {
 				saleService.save(dto);

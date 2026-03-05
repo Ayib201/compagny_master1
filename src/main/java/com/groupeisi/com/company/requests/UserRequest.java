@@ -31,8 +31,8 @@ public class UserRequest {
         return action == null || action.isBlank() || "create".equals(action);
     }
 
-    public boolean isUpdate() {
-        return "update".equals(action);
+    public boolean isEdit() {
+        return "edit".equals(action);
     }
 
     public boolean isDelete() {

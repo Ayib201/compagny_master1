@@ -8,18 +8,16 @@ import lombok.Data;
 public class ProduitRequest {
 
     private String action;
-    private String id;
-    private String name;
     private String ref;
+    private String name;
     private String stock;
     private String email;
 
     public static ProduitRequest from(HttpServletRequest request) {
         ProduitRequest r = new ProduitRequest();
         r.setAction(request.getParameter("action"));
-        r.setId(request.getParameter("id"));
+        r.setRef(request.getParameter("id"));
         r.setName(request.getParameter("name"));
-        r.setRef(request.getParameter("ref"));
         r.setStock(request.getParameter("stock"));
         r.setEmail(request.getParameter("email"));
         return r;
@@ -31,8 +29,8 @@ public class ProduitRequest {
         return action == null || action.isBlank() || "create".equals(action);
     }
 
-    public boolean isUpdate() {
-        return "update".equals(action);
+    public boolean isEdit() {
+        return "edit".equalsIgnoreCase(action);
     }
 
     public boolean isDelete() {
@@ -73,30 +71,14 @@ public class ProduitRequest {
         }
     }
 
-    public String validateId() throws Exception {
-        if (id == null || id.isBlank())
-            throw new Exception("ID obligatoire");
-        return id;
-    }
-
-    public String parseIdOrNull() {
-        if (id == null || id.isBlank()) return null;
-        return id;
-    }
-
     // ── Construction du DTO ───────────────────────────────────────────
 
     public ProductDto toDto() throws Exception {
-        ProductDto dto = ProductDto.builder()
-                .userEmail(validateEmail())
-                .name(validateName())
-                .ref(validateRef())
-                .stock(validateStock())
+        return ProductDto.builder()
+                .userEmail(email)
+                .name(name)
+                .ref(ref)
+                .stock(Double.parseDouble(stock))
                 .build();
-
-        String parsedId = parseIdOrNull();
-        if (parsedId != null) dto.setRef(parsedId);
-
-        return dto;
     }
 }

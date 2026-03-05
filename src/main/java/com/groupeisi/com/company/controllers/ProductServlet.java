@@ -39,15 +39,14 @@ public class ProductServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			ProduitRequest request = ProduitRequest.from(req);
-
 			if (request.isDelete()) {
-				productService.delete(request.validateId());
+				productService.delete(request.getRef());
 				resp.sendRedirect(REDIRECT_PRODUIT);
 				return;
 			}
 
-			if (request.isUpdate()) {
-				productService.get(request.validateId())
+			if (request.isEdit()) {
+				productService.get(request.getRef())
 						.ifPresent(p -> req.setAttribute("editProduct", p));
 			}
 
@@ -68,14 +67,14 @@ public class ProductServlet extends HttpServlet {
 			ProduitRequest request = ProduitRequest.from(req);
 
 			if (request.isDelete()) {
-				productService.delete(request.validateId());
+				productService.delete(request.getRef());
 				resp.sendRedirect(REDIRECT_PRODUIT);
 				return;
 			}
 
 			ProductDto dto = request.toDto();
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				productService.update(dto);
 			} else if (request.isCreate()) {
 				productService.save(dto);

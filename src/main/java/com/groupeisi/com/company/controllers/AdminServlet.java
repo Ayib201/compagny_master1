@@ -41,7 +41,7 @@ public class AdminServlet extends HttpServlet {
 				return;
 			}
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				userService.get(request.validateId())
 						.ifPresent(user -> req.setAttribute("editUser", user));
 			}
@@ -70,7 +70,7 @@ public class AdminServlet extends HttpServlet {
 
 			UserDto dto = request.toDto();
 
-			if (request.isUpdate()) {
+			if (request.isEdit()) {
 				userService.update(dto);
 			} else if (request.isCreate()) {
 				userService.save(dto);
