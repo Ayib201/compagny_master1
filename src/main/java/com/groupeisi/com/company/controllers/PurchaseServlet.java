@@ -74,8 +74,13 @@ public class PurchaseServlet extends HttpServlet {
 			PurchaseRequest request = PurchaseRequest.from(req);
 
 			if (request.isDelete()) {
-				purchaseService.delete(request.validateId());
-				resp.sendRedirect(REDIRECT_PURCHASE);
+				try {
+					purchaseService.delete(request.validateId());
+					resp.sendRedirect(REDIRECT_PURCHASE);
+				} catch (Exception e) {
+                    logger.error("Erreur suppression achats id ={}", request.validateId(), e);
+					req.setAttribute(KEY_MESSAGE, "Impossible de supprimer ce produit.");
+				}
 				return;
 			}
 
@@ -90,7 +95,8 @@ public class PurchaseServlet extends HttpServlet {
 			resp.sendRedirect(REDIRECT_PURCHASE);
 
 		} catch (Exception e) {
-			req.setAttribute(KEY_MESSAGE, e.getMessage());
+			logger.error("Erreur inattendue dans doGet", e);
+			req.setAttribute(KEY_MESSAGE, "Une erreur est survenue lors du chargement de la page.");
 			loadPage(req, resp);
 		}
 	}

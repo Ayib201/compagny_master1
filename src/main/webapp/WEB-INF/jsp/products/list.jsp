@@ -40,7 +40,7 @@
 							<td class="text-center">
 
 								<!-- Edit -->
-								<a href="produit?action=edit&id=${fn:escapeXml(product.ref)}"
+								<a href="produit?action=edit&ref=${fn:escapeXml(product.ref)}"
 								   class="btn btn-sm btn-outline-warning me-1">
 									<i class="bi bi-pencil"></i> Edit
 								</a>
@@ -49,7 +49,7 @@
 								<form action="produit" method="post" class="d-inline"
 									  onsubmit="return confirm('Confirmer la suppression de ${fn:escapeXml(product.ref)} ?')">
 									<input type="hidden" name="action" value="delete">
-									<input type="hidden" name="id" value="${fn:escapeXml(product.ref)}">
+									<input type="hidden" name="ref" value="${fn:escapeXml(product.ref)}">
 									<button type="submit" class="btn btn-sm btn-outline-danger">
 										<i class="bi bi-trash"></i> Delete
 									</button>
@@ -80,7 +80,7 @@
 
 					<c:if test="${editProduct != null}">
 						<input type="hidden" name="action" value="update">
-						<input type="hidden" name="id" value="${fn:escapeXml(editProduct.ref)}">
+						<input type="hidden" name="ref" value="${fn:escapeXml(editProduct.ref)}">
 					</c:if>
 
 					<div class="row g-3">
@@ -97,7 +97,7 @@
 						</div>
 						<div class="col-md-4">
 							<label for="inputStock" class="form-label">Stock</label>
-							<input type="number" step="0.01" name="stock" class="form-control" id="inputStock"
+							<input type="number" step="1" name="stock" class="form-control" id="inputStock"
 								   value="${editProduct != null ? editProduct.stock : ''}" required>
 						</div>
 

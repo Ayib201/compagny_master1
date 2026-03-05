@@ -16,7 +16,7 @@ public class ProduitRequest {
     public static ProduitRequest from(HttpServletRequest request) {
         ProduitRequest r = new ProduitRequest();
         r.setAction(request.getParameter("action"));
-        r.setRef(request.getParameter("id"));
+        r.setRef(request.getParameter("ref"));
         r.setName(request.getParameter("name"));
         r.setStock(request.getParameter("stock"));
         r.setEmail(request.getParameter("email"));

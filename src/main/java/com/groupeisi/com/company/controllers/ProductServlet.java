@@ -73,7 +73,11 @@ public class ProductServlet extends HttpServlet {
 			}
 
 			ProductDto dto = request.toDto();
-
+			if (dto.getRef() == null || dto.getRef().isBlank()) {
+				req.setAttribute(KEY_MESSAGE, "Référence obligatoire pour créer le produit");
+				loadPage(req, resp);
+				return;
+			}
 			if (request.isEdit()) {
 				productService.update(dto);
 			} else if (request.isCreate()) {
