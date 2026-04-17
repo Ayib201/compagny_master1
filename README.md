@@ -1,8 +1,4 @@
-# Company - Application de Gestion
-
-Une application web Java moderne pour la gestion d'entreprise (produits, utilisateurs, ventes, achats).
-
-## 🚀 Technologies
+## Technologies
 
 ### Backend
 - **Java 21** - Langage de programmation principal
@@ -30,26 +26,14 @@ Une application web Java moderne pour la gestion d'entreprise (produits, utilisa
 - **Docker & Docker Compose** - Containerisation
 - **Tomcat** - Serveur d'application (à déployer)
 
-## 📋 Prérequis
+## Prérequis
 
 ### Obligatoires
 - **Java 21 JDK** ou supérieur
 - **Maven 3.8+**
 - **Docker & Docker Compose** (pour la base de données)
 
-### Optionnels
-- Un IDE comme IntelliJ IDEA ou Eclipse
-- Un client PostgreSQL (pgAdmin fourni via Docker)
-
-## 🔧 Installation et Configuration
-
-### 1. Cloner le projet
-```bash
-git clone <repository-url>
-cd company
-```
-
-### 2. Démarrer la base de données
+### 1. Démarrer la base de données
 ```bash
 docker-compose up -d
 ```
@@ -62,22 +46,17 @@ Cela lance:
 - Email: `admin@admin.com`
 - Mot de passe: `admin`
 
-### 3. Compiler le projet
+### 2. Compiler le projet
 ```bash
 mvn clean compile
 ```
 
-### 4. Exécuter les migrations de base de données
+### 3. Exécuter les migrations de base de données
 ```bash
 mvn flyway:migrate
 ```
 
-### 5. Construire l'application
-```bash
-mvn clean package
-```
-
-## 🏃 Exécution
+## Exécution
 
 ### Classe Main (Thread Runnable)
 La classe `Main` implémente `Runnable` et permet de tester l'insertion d'utilisateurs en base de données :
@@ -92,7 +71,7 @@ Cette classe crée un nouvel utilisateur test (Ayib Toure) via le `UserService` 
 
 L'application sera accessible sur `http://localhost:8080/company`
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
 src/main/
@@ -120,8 +99,17 @@ src/main/
     ├── index.jsp
     └── public/             # Assets statiques (CSS, JS)
 ```
+## Interface de l'application
+- Gestions des Users
+![Description](assets/img.png)
+- Gestions des Produits
+![Description](assets/img_1.png)
+- Gestions des purchases
+![Description](assets/img_2.png)
+- Gestions des sales
+![Description](assets/img_3.png)
 
-## 🗄️ Base de Données
+## Base de Données
 
 ### Connexion
 - **Host:** localhost
@@ -136,8 +124,7 @@ Les migrations SQL sont versionnées dans `src/main/resources/db/migrations/`
 
 Exécutées automatiquement lors du déploiement via Flyway.
 
-
-## ⚙️ Variables d'Environnement (.env)
+## Variables d'Environnement (.env)
 
 Le fichier `.env` se trouve dans `src/main/resources/` pour surcharger les paramètres :
 ```properties
@@ -149,7 +136,7 @@ LOG_LEVEL=INFO
 
 Un fichier `.env.example` est également fourni comme modèle.
 
-## 🐛 Dépannage
+## Dépannage
 
 **Port 5433 déjà utilisé?**
 ```bash
@@ -163,14 +150,3 @@ Un fichier `.env.example` est également fourni comme modèle.
 mvn flyway:clean
 mvn flyway:migrate
 ```
-
-**Problème de compilation Java 21?**
-```bash
-# Assurez-vous que JAVA_HOME pointe vers JDK 21
-# Sur Windows (PowerShell):
-java -version
-```
-
-## 📝 Licence
-
-Projet interne - Tous droits réservés
